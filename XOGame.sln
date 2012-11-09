@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOGame", "XOGame\XOGame.csproj", "{A6DFD57B-F0A6-48AD-B439-C7C04BE2FC69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeConsole", "TicTacToeConsole\TicTacToeConsole.csproj", "{CD25B9B1-B9CC-42E1-BC11-7A340DBCB366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeWinForm", "TicTacToeWinForm\TicTacToeWinForm.csproj", "{9398D1F7-F217-45F9-8C5E-F91469BAF8F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOOverNetwork", "XOOverNetwork\XOOverNetwork.csproj", "{B1372DC1-A6A8-4CAA-8E57-680BA207E722}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6DFD57B-F0A6-48AD-B439-C7C04BE2FC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DFD57B-F0A6-48AD-B439-C7C04BE2FC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DFD57B-F0A6-48AD-B439-C7C04BE2FC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DFD57B-F0A6-48AD-B439-C7C04BE2FC69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD25B9B1-B9CC-42E1-BC11-7A340DBCB366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD25B9B1-B9CC-42E1-BC11-7A340DBCB366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD25B9B1-B9CC-42E1-BC11-7A340DBCB366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD25B9B1-B9CC-42E1-BC11-7A340DBCB366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9398D1F7-F217-45F9-8C5E-F91469BAF8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9398D1F7-F217-45F9-8C5E-F91469BAF8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9398D1F7-F217-45F9-8C5E-F91469BAF8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9398D1F7-F217-45F9-8C5E-F91469BAF8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1372DC1-A6A8-4CAA-8E57-680BA207E722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1372DC1-A6A8-4CAA-8E57-680BA207E722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1372DC1-A6A8-4CAA-8E57-680BA207E722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1372DC1-A6A8-4CAA-8E57-680BA207E722}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
