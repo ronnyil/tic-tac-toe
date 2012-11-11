@@ -26,8 +26,8 @@ namespace XOOverNetwork
 
         private Encoding encoder;
         private XOCoordinate _lastOMove;
-        
-        
+
+
         //Statechart variables
         private OuterStates _outerState;
         private InnerStates _innerState;
@@ -48,7 +48,7 @@ namespace XOOverNetwork
         public event RecievedMoveEventHandler MoveRecieved;
         public event GameOverEventHandler GameOver;
         public event ConnectionEstablishedEventHandler ConnectionEstablished;
-        
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -66,29 +66,33 @@ namespace XOOverNetwork
         {
             _listener.Start();
             _outerState = OuterStates.WaitingForConnection;
-            _host = _listener.AcceptTcpClient();            
+            _host = _listener.AcceptTcpClient();
             _clientStream = _host.GetStream();
 
             byte[] message = new byte[4096];
             int bytesRead;
             string stringMessage = "";
 
-            while (!(_outerState == OuterStates.Playing && _innerState == InnerStates.WaitingForMyMove))
+            while (true)
             {
-                bytesRead = 0;
-                try
+                if (!(_outerState == OuterStates.Playing && _innerState == InnerStates.WaitingForMyMove))
                 {
-                    bytesRead = _clientStream.Read(message, 0, 4096);
+
+                    bytesRead = 0;
+                    try
+                    {
+                        bytesRead = _clientStream.Read(message, 0, 4096);
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                    }
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+                    stringMessage = encoder.GetString(message, 0, bytesRead);
                 }
-                catch (Exception)
-                {
-                    break;
-                }
-                if (bytesRead == 0)
-                {
-                    break;
-                }
-                stringMessage = encoder.GetString(message, 0, bytesRead);
                 switch (_outerState)
                 {
                     case OuterStates.WaitingForConnection:
@@ -97,7 +101,6 @@ namespace XOOverNetwork
                         {
                             byte[] buffer = encoder.GetBytes("HIACK");
                             _clientStream.Write(buffer, 0, buffer.Length);
-                            //TODO: Fire ConnectionEstablished Event.
                             IPEndPoint endPoint = (IPEndPoint)_host.Client.RemoteEndPoint;
                             if (ConnectionEstablished.GetInvocationList().Length > 0)
                             {
@@ -116,7 +119,7 @@ namespace XOOverNetwork
                         break;
                     case OuterStates.Playing:
                         switch (_innerState)
-	                    {
+                        {
                             case InnerStates.WaitingForXMove:
                                 string messageType = stringMessage.Substring(0, 2);
                                 if (messageType == "XM")
@@ -136,7 +139,7 @@ namespace XOOverNetwork
                                 break;
                             default:
                                 break;
-	                    }
+                        }
                         break;
                     case OuterStates.Over:
                         break;
@@ -156,9 +159,27 @@ namespace XOOverNetwork
 
         private void DoGameOver(string stringMessage)
         {
-            string boardString = stringMessage.Split(':')[1].Reverse().ToString();
+            var splitArray = stringMessage.Split(':');
+            string boardString = splitArray[1].Reverse().ToString();
+            var board = MakeBoardFromString(boardString);
+            string solutionString = splitArray[2].Reverse().ToString();
+            List<XOCoordinate> solution = new List<XOCoordinate>();
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (solutionString[i * 3 + j] == '1')
+                    {
+                        
+                    }
+                }
+            }
             //TODO finish up this function.
             //TODO Call game over event
+            if (GameOver.GetInvocationList().Count() > 0)
+            {
+               // GameOver(this, new XOGameOverEventArgs() { 
+            }
 
         }
 
