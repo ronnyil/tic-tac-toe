@@ -10,6 +10,6 @@ namespace XOGame
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public Player HoldingPlayer { get; set; }
+        public XOPlayer HoldingPlayer { get; set; }
     }
 }

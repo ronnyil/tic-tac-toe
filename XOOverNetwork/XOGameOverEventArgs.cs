@@ -10,5 +10,6 @@ namespace XOOverNetwork
     {
         public List<XOCoordinate> Solution { get; set; }
         public List<XOCoordinate> Board { get; set; }
+        public XOPlayer Winner { get; set; }
     }
 }

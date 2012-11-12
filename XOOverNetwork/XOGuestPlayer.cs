@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using XOGame;
+
 namespace XOOverNetwork
 {
     public class XOGuestPlayer
@@ -75,6 +76,11 @@ namespace XOOverNetwork
 
             while (true)
             {
+                if (_outerState == OuterStates.Over)
+                {
+                    CleanUp();
+                    break;
+                }
                 if (!(_outerState == OuterStates.Playing && _innerState == InnerStates.WaitingForMyMove))
                 {
 
@@ -149,6 +155,11 @@ namespace XOOverNetwork
             }
         }
 
+        private void CleanUp()
+        {
+            _clientStream.Close();
+        }
+
         private void WaitForMyMove()
         {
             OMoved.WaitOne();
@@ -160,9 +171,30 @@ namespace XOOverNetwork
         private void DoGameOver(string stringMessage)
         {
             var splitArray = stringMessage.Split(':');
-            string boardString = splitArray[1].Reverse().ToString();
+
+            //Finding the winner.
+            XOPlayer winner = XOPlayer.NotSet;
+            char winnerChar = splitArray[1][2];
+            switch (winnerChar)
+            {
+                case 'X':
+                    winner = XOPlayer.X;
+                    break;
+                case 'O':
+                    winner = XOPlayer.O;
+                    break;
+                case 'N':
+                    winner = XOPlayer.NotSet;
+                    break;
+                default:
+                    break;
+            }
+            //Getting the board
+            string boardString = splitArray[2].Reverse().ToString();
             var board = MakeBoardFromString(boardString);
-            string solutionString = splitArray[2].Reverse().ToString();
+
+            ///Making the solution List.
+            string solutionString = splitArray[3].Reverse().ToString();
             List<XOCoordinate> solution = new List<XOCoordinate>();
             for (int i = 0; i < 3; i++)
             {
@@ -170,15 +202,20 @@ namespace XOOverNetwork
                 {
                     if (solutionString[i * 3 + j] == '1')
                     {
-                        
+                        solution.Add(new XOCoordinate() { HoldingPlayer = winner, X = i, Y = j });
                     }
                 }
             }
-            //TODO finish up this function.
-            //TODO Call game over event
+
             if (GameOver.GetInvocationList().Count() > 0)
             {
-               // GameOver(this, new XOGameOverEventArgs() { 
+                XOGameOverEventArgs args = new XOGameOverEventArgs()
+                {
+                    Board = board,
+                    Solution = solution,
+                    Winner = winner
+                };
+                GameOver(this, args);
             }
 
         }
@@ -208,13 +245,13 @@ namespace XOOverNetwork
                     switch (boardString[i * 3 + j])
                     {
                         case 'X':
-                            coord.HoldingPlayer = Player.X;
+                            coord.HoldingPlayer = XOPlayer.X;
                             break;
                         case 'O':
-                            coord.HoldingPlayer = Player.O;
+                            coord.HoldingPlayer = XOPlayer.O;
                             break;
                         default:
-                            coord.HoldingPlayer = Player.NotSet;
+                            coord.HoldingPlayer = XOPlayer.NotSet;
                             break;
                     }
                     board.Add(coord);

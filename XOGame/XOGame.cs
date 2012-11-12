@@ -8,7 +8,7 @@ using System.Drawing;
 namespace XOGame
 {
 
-    public enum Player
+    public enum XOPlayer
     {
         X = 1, O = -1, NotSet
     }
@@ -16,15 +16,15 @@ namespace XOGame
     {
         private const int ROWS = 3;
         private const int COLUMNS = 3;
-        private Player[,] _board;
-        private Player _winner;
+        private XOPlayer[,] _board;
+        private XOPlayer _winner;
         private int _winningSolution;
         private List<int> _solutions;
         private int _moves;
 
         public XOGame()
         {            
-            _board = new Player[ROWS, COLUMNS];
+            _board = new XOPlayer[ROWS, COLUMNS];
             ResetGame();
             InitializeSolutions();
         }
@@ -53,7 +53,7 @@ namespace XOGame
         }
         public void ResetGame()
         {
-            _winner = Player.NotSet;
+            _winner = XOPlayer.NotSet;
             _winningSolution = 0;
             _moves = 0;
             ResetBoard();
@@ -64,7 +64,7 @@ namespace XOGame
             {
                 for (int j = 0; j < COLUMNS; j++)
                 {
-                    _board[i, j] = Player.NotSet;
+                    _board[i, j] = XOPlayer.NotSet;
                 }
             }
         }
@@ -77,9 +77,9 @@ namespace XOGame
             };            
         }
 
-        public void MakeAMove(Player movingPlayer, int row, int column)
+        public void MakeAMove(XOPlayer movingPlayer, int row, int column)
         {
-            if (_board[row,column] != Player.NotSet)
+            if (_board[row,column] != XOPlayer.NotSet)
             {
                 throw new Exception("You can't set an already set place on the board!");
             }
@@ -92,9 +92,9 @@ namespace XOGame
             GetWinner();
         }
 
-        public Player GetWinner()
+        public XOPlayer GetWinner()
         {
-            if (_winner != Player.NotSet)
+            if (_winner != XOPlayer.NotSet)
             {
                 return _winner;
             }
@@ -103,11 +103,11 @@ namespace XOGame
             {
                 for (int j = 0; j < COLUMNS; j++)
                 {
-                    if (_board[i,j] == Player.X)
+                    if (_board[i,j] == XOPlayer.X)
                     {
                         x |= (int)Math.Pow(2.0, i * 3 + j);
                     }
-                    else if (_board[i,j] == Player.O)
+                    else if (_board[i,j] == XOPlayer.O)
                     {
                         o |= (int)Math.Pow(2.0, i * 3 + j);
                     }
@@ -117,20 +117,20 @@ namespace XOGame
             {
                 if ((x & solution) == solution)
                 {
-                    _winner = Player.X;
+                    _winner = XOPlayer.X;
                     _winningSolution = solution;
                     return _winner;
                 }
                 if (((o & solution) == solution))
                 {
-                    _winner = Player.O;
+                    _winner = XOPlayer.O;
                     _winningSolution = solution;
                     return _winner;
                 }
             }
             return _winner;
         }
-        public Player GetValueInSpot(int row, int column)
+        public XOPlayer GetValueInSpot(int row, int column)
         {
             return _board[row, column];
         }
@@ -138,7 +138,7 @@ namespace XOGame
         {
             get
             {
-                return (_winner != Player.NotSet) || (_moves >= 9);
+                return (_winner != XOPlayer.NotSet) || (_moves >= 9);
             }
         }
 

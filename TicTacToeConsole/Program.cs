@@ -12,7 +12,7 @@ namespace TicTacToeConsole
         static void Main(string[] args)
         {
             XOGame.XOGame game = new XOGame.XOGame();
-            Player turn = Player.X;
+            XOPlayer turn = XOPlayer.X;
             int row, column;
             Console.WriteLine("X goes first.");
             while (!game.IsGameOver)
@@ -29,18 +29,18 @@ namespace TicTacToeConsole
                 game.MakeAMove(turn, row, column);
                 int tturn = (int)turn;
                 tturn = tturn * -1;
-                turn = (Player)tturn;
+                turn = (XOPlayer)tturn;
                 Console.Clear();
             }
             switch (game.GetWinner())
             {
-                case Player.X:
+                case XOPlayer.X:
                     Console.WriteLine("X is the winner!");
                     break;
-                case Player.O:
+                case XOPlayer.O:
                     Console.WriteLine("O is the winner!");
                     break;
-                case Player.NotSet:
+                case XOPlayer.NotSet:
                     Console.WriteLine("It's a draw!");
                     break;
                 default:
@@ -61,13 +61,13 @@ namespace TicTacToeConsole
                     Console.Write(" ");
                     switch (game.GetValueInSpot(i,j))
                     {
-                        case Player.X:
+                        case XOPlayer.X:
                             Console.Write("X");
                             break;
-                        case Player.O:
+                        case XOPlayer.O:
                             Console.Write("O");
                             break;
-                        case Player.NotSet:
+                        case XOPlayer.NotSet:
                             Console.Write(" ");
                             break;
                         default:

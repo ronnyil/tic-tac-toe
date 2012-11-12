@@ -15,7 +15,7 @@ namespace TicTacToeWinForm
         Color buttonColor;
         int XWins, YWins;
         XOGame.XOGame _theGame;
-        XOGame.Player _currentPlayer;
+        XOGame.XOPlayer _currentPlayer;
         class ButtonTag
         {
             public int Row { get; set; }
@@ -31,7 +31,7 @@ namespace TicTacToeWinForm
             InitializeComponent();
             buttonColor = button9.BackColor;
             InitializeButtons();
-            _currentPlayer = Player.X;
+            _currentPlayer = XOPlayer.X;
             XWins = YWins = 0;
             CurrentPlayerLabel.Text = _currentPlayer.ToString();
             _theGame = new XOGame.XOGame();
@@ -74,20 +74,20 @@ namespace TicTacToeWinForm
             _theGame.MakeAMove(_currentPlayer, tag.Row, tag.Column);
             if (_theGame.IsGameOver)
             {
-                Player winner = _theGame.GetWinner();
+                XOPlayer winner = _theGame.GetWinner();
                 switch (winner)
                 {
-                    case Player.X:
+                    case XOPlayer.X:
                         MessageBox.Show("X is the champion!");
                         ShowWinner(_theGame.WinningSolution);
                         XWins++;
                         break;
-                    case Player.O:
+                    case XOPlayer.O:
                         MessageBox.Show("O is the champion!");
                         ShowWinner(_theGame.WinningSolution);
                         YWins++;
                         break;
-                    case Player.NotSet:
+                    case XOPlayer.NotSet:
                         MessageBox.Show("Looks like a draw...");
                         break;
                     default:
@@ -98,7 +98,7 @@ namespace TicTacToeWinForm
                 t.Tick += (s, ea) =>
                 {
                     _theGame.ResetGame();
-                    _currentPlayer = Player.X;
+                    _currentPlayer = XOPlayer.X;
                     CurrentPlayerLabel.Text = _currentPlayer.ToString();
                     InitializeButtons();
                     t.Stop();
@@ -126,7 +126,7 @@ namespace TicTacToeWinForm
         {
             int t = (int)_currentPlayer;
             t *= -1;
-            _currentPlayer = (Player)t;
+            _currentPlayer = (XOPlayer)t;
         }
 
     }
