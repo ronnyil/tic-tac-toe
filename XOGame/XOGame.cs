@@ -12,6 +12,12 @@ namespace XOGame
     {
         X = 1, O = -1, NotSet
     }
+    /// <summary>
+    /// The main TicTacToe game class. 
+    /// </summary>
+    /// <remarks>
+    /// Keeps track of a TicTacToe game.
+    /// </remarks>
     public class XOGame
     {
         private const int ROWS = 3;
@@ -21,13 +27,19 @@ namespace XOGame
         private int _winningSolution;
         private List<int> _solutions;
         private int _moves;
+        private XOPlayer _lastMove;
 
+        /// <summary>
+        /// The XOGame constructor. Initializes all the fields.
+        /// </summary>
+        /// <seealso cref="ResetGame"/>
         public XOGame()
         {            
             _board = new XOPlayer[ROWS, COLUMNS];
             ResetGame();
             InitializeSolutions();
         }
+
         public List<System.Drawing.Point> WinningSolution
         {
             get
@@ -51,13 +63,16 @@ namespace XOGame
                 return retList;
             }
         }
+
         public void ResetGame()
         {
             _winner = XOPlayer.NotSet;
+            _lastMove = XOPlayer.NotSet;
             _winningSolution = 0;
             _moves = 0;
             ResetBoard();
         }
+
         private void ResetBoard()
         {
             for (int i = 0; i < ROWS; i++)
@@ -76,18 +91,33 @@ namespace XOGame
                 7,56,448,292,146,73,273,84
             };            
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="movingPlayer"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <exception cref="XOInvalidMoveException"></exception>
         public void MakeAMove(XOPlayer movingPlayer, int row, int column)
         {
             if (_board[row,column] != XOPlayer.NotSet)
             {
-                throw new Exception("You can't set an already set place on the board!");
+                throw new XOInvalidMoveException("You can't set an already set place on the board!", XOInvalidMoveExceptionReasons.AlreadySetPlace);
             }
-            if (row >= ROWS || row < 0 || column >= COLUMNS || column < 0)
+            if (row >= ROWS || row < 0)
             {
-                throw new ArgumentOutOfRangeException();                
+                throw new ArgumentOutOfRangeException("row");            
             }
+            if (column >= COLUMNS || column < 0)
+            {
+                throw new ArgumentOutOfRangeException("column");
+            }
+            if (_lastMove == movingPlayer)
+            {
+                throw new XOInvalidMoveException("You can't go twice in a row!", XOInvalidMoveExceptionReasons.SamePlayerTwice);
+            }   
             _board[row, column] = movingPlayer;
+            _lastMove = movingPlayer;
             _moves++;
             GetWinner();
         }
