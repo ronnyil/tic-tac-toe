@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using XOGame;
 namespace XOOverNetwork
 {
-    class XOMoveEventArgs : EventArgs
+    public class XOMoveEventArgs : EventArgs
     {
         public List<XOCoordinate> Board { get; set; }
     }
