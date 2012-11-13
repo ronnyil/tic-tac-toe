@@ -53,6 +53,7 @@ namespace XOUnitTests
             Assert.AreEqual<XOPlayer>(expectedWinner, actualWinner,
                 String.Format("The winner is supposed to be 'NotSet'. The winner was '{0}'.", actualWinner));
         }
+
         [TestMethod]
         [ExpectedException(typeof(XOInvalidMoveException))]
         public void TestTwoOfTheSamePlayerInARow()
@@ -61,6 +62,63 @@ namespace XOUnitTests
 
             _testGame.MakeAMove(XOPlayer.X, 0, 0);
             _testGame.MakeAMove(XOPlayer.X, 0, 1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TestInvalidMove()
+        {
+            XOGame.XOGame _testGame = new XOGame.XOGame();
+
+            _testGame.MakeAMove(XOPlayer.X, 0, 3);
+        }
+
+        [TestMethod]
+        public void TestWholeGameToDraw()
+        {
+            XOGame.XOGame _testGame = new XOGame.XOGame();
+            _testGame.MakeAMove(XOPlayer.X, 0, 0);
+            _testGame.MakeAMove(XOPlayer.O, 1, 1);
+            _testGame.MakeAMove(XOPlayer.X, 1, 0);
+            _testGame.MakeAMove(XOPlayer.O, 2, 0);
+            _testGame.MakeAMove(XOPlayer.X, 0, 2);
+            _testGame.MakeAMove(XOPlayer.O, 0, 1);
+            _testGame.MakeAMove(XOPlayer.X, 2, 1);
+            _testGame.MakeAMove(XOPlayer.O, 1, 2);
+            _testGame.MakeAMove(XOPlayer.X, 2, 2);
+
+            bool expectedGameOver = true;
+            bool actualGameOver = _testGame.IsGameOver;
+            Assert.AreEqual<bool>(expectedGameOver, actualGameOver, "The game was supposed to be over by now");
+
+            XOPlayer expectedWinner = XOPlayer.NotSet;
+            XOPlayer actualWinner = _testGame.GetWinner();
+            Assert.AreEqual<XOPlayer>(expectedWinner, actualWinner, "The game was supposed to be a draw, instead '" + actualWinner.ToString() + "' was the winner.");
+
+            Assert.AreEqual<int>(0, _testGame.WinningSolution.Count, "The solution should be empty.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(XOInvalidMoveException))]
+        public void TestWholeGameToOWin()
+        {
+            XOGame.XOGame _testGame = new XOGame.XOGame();
+            _testGame.MakeAMove(XOPlayer.X, 0, 0);
+            _testGame.MakeAMove(XOPlayer.O, 1, 1);
+            _testGame.MakeAMove(XOPlayer.X, 2, 1);
+            _testGame.MakeAMove(XOPlayer.O, 2, 0);
+            _testGame.MakeAMove(XOPlayer.X, 1, 2);
+            _testGame.MakeAMove(XOPlayer.O, 0, 2);
+
+            bool expectedGameOver = true;
+            bool actualGameOver = _testGame.IsGameOver;
+            Assert.AreEqual<bool>(expectedGameOver, actualGameOver, "The game was supposed to be over by now");
+
+            XOPlayer expectedWinner = XOPlayer.O;
+            XOPlayer actualWinner = _testGame.GetWinner();
+            Assert.AreEqual<XOPlayer>(expectedWinner, actualWinner, "The winner was supposed to be 'O', instead '" + actualWinner.ToString() + "' was the winner.");
+
+            _testGame.MakeAMove(XOPlayer.X, 2, 2);
         }
     }
 }

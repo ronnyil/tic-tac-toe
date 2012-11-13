@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace TicTacToeWinForm
 {
     public partial class Form1 : Form
     {
+        private const string movesFile = @"C:\users\raanan\desktop\moves.txt";
         Color buttonColor;
         int XWins, YWins;
         XOGame.XOGame _theGame;
@@ -25,6 +27,13 @@ namespace TicTacToeWinForm
                 return "Row: " + Row + ", Column: " + Column;
             }
         }
+        private void LogMove(XOPlayer player, int row, int column)
+        {
+            using (StreamWriter sw = File.AppendText(movesFile))
+            {
+                sw.WriteLine("_testGame.MakeAMove(XOPlayer.{0},{1},{2});",player,row,column);
+            }
+        }
         public Form1()
         {
 
@@ -35,6 +44,10 @@ namespace TicTacToeWinForm
             XWins = YWins = 0;
             CurrentPlayerLabel.Text = _currentPlayer.ToString();
             _theGame = new XOGame.XOGame();
+            if (File.Exists(movesFile))
+            {
+                File.Delete(movesFile);
+            }
         }
 
         private void InitializeButtons()
@@ -71,6 +84,7 @@ namespace TicTacToeWinForm
                 return;
             }
             sender_button.Text = _currentPlayer.ToString();
+            LogMove(_currentPlayer, tag.Row, tag.Column);
             _theGame.MakeAMove(_currentPlayer, tag.Row, tag.Column);
             if (_theGame.IsGameOver)
             {

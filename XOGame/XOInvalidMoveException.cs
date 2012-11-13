@@ -9,7 +9,8 @@ namespace XOGame
     public enum XOInvalidMoveExceptionReasons
     {
         SamePlayerTwice,
-        AlreadySetPlace
+        AlreadySetPlace,
+        GameAlreadyOver
     }
     public class XOInvalidMoveException : Exception
     {

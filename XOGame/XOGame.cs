@@ -43,12 +43,12 @@ namespace XOGame
         public List<System.Drawing.Point> WinningSolution
         {
             get
-            {
+            {               
+                List<Point> retList = new List<Point>();
                 if (_winningSolution == 0)
                 {
-                    return null;
+                    return retList;
                 }
-                List<Point> retList = new List<Point>();
                 for (int i = 0; i < ROWS; i++)
                 {
                     for (int j = 0; j < COLUMNS; j++)
@@ -100,22 +100,27 @@ namespace XOGame
         /// <exception cref="XOInvalidMoveException"></exception>
         public void MakeAMove(XOPlayer movingPlayer, int row, int column)
         {
-            if (_board[row,column] != XOPlayer.NotSet)
-            {
-                throw new XOInvalidMoveException("You can't set an already set place on the board!", XOInvalidMoveExceptionReasons.AlreadySetPlace);
-            }
             if (row >= ROWS || row < 0)
             {
-                throw new ArgumentOutOfRangeException("row");            
+                throw new ArgumentOutOfRangeException("row");
             }
             if (column >= COLUMNS || column < 0)
             {
                 throw new ArgumentOutOfRangeException("column");
             }
+            if (IsGameOver)
+            {
+                throw new XOInvalidMoveException("The game is over!", XOInvalidMoveExceptionReasons.GameAlreadyOver);
+            }
             if (_lastMove == movingPlayer)
             {
                 throw new XOInvalidMoveException("You can't go twice in a row!", XOInvalidMoveExceptionReasons.SamePlayerTwice);
-            }   
+            } 
+            if (_board[row,column] != XOPlayer.NotSet)
+            {
+                throw new XOInvalidMoveException("You can't set an already set place on the board!", XOInvalidMoveExceptionReasons.AlreadySetPlace);
+            }
+              
             _board[row, column] = movingPlayer;
             _lastMove = movingPlayer;
             _moves++;
